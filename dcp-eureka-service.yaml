@@ -1,0 +1,85 @@
+---
+
+spring:
+  profiles: uat-alpha
+
+server:
+  port: 8761
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.56.203:8761/eureka/
+
+---
+
+spring:
+  profiles: uat-omega
+
+server:
+  port: 8761
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.56.202:8761/eureka/
+
+---
+
+spring:
+  profiles: pre-prod-alpha
+
+server:
+  port: 8761
+  ssl:
+    key-store: classpath:192.168.56.202.jks
+    key-store-password: changeit
+    key-alias: 192.168.56.202
+    trust-store: classpath:ms-truststore.jks
+    trust-store-password: changeit
+    securePortEnabled: true
+    nonSecurePortEnabled: false
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: https://192.168.56.203:8761/eureka/
+  instance:
+    securePort: ${server.port}
+    securePortEnabled: true
+    nonSecurePortEnabled: false
+    metadataMap:
+      securePort: ${server.port}
+
+---
+
+spring:
+  profiles: pre-prod-omega
+
+server:
+  port: 8761
+  ssl:
+    key-store: classpath:192.168.56.203.jks
+    key-store-password: changeit
+    key-alias: 192.168.56.203
+    trust-store: classpath:ms-truststore.jks
+    trust-store-password: changeit
+    securePortEnabled: true
+    nonSecurePortEnabled: false
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: https://192.168.56.202:8761/eureka/
+  instance:
+    securePort: ${server.port}
+    securePortEnabled: true
+    nonSecurePortEnabled: false
+    metadataMap:
+      securePort: ${server.port}
+
+---
+
+spring:
+  application:
+    name: dcp-eureka-service
