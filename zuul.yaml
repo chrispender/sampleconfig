@@ -1,0 +1,112 @@
+---
+
+spring:
+    profiles: uat-alpha
+
+server:
+  port: 9090
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.56.202:8761/eureka/
+    registry-fetch-interval-seconds: 1
+
+  instance:
+    hostname: 192.168.56.201
+    metadataMap:
+      zone: alpha
+    statusPageUrl: http://${eureka.instance.hostname}:${server.port}/info
+    healthCheckUrl: http://${eureka.instance.hostname}:${server.port}/health
+
+
+---
+
+spring:
+    profiles: uat-omega
+
+server:
+  port: 9090
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.56.203:8761/eureka/
+    registry-fetch-interval-seconds: 1
+
+  instance:
+    hostname: 192.168.56.206
+    metadataMap:
+      zone: omega
+    statusPageUrl: http://${eureka.instance.hostname}:${server.port}/info
+    healthCheckUrl: http://${eureka.instance.hostname}:${server.port}/health
+
+
+---
+
+spring:
+    profiles: pre-prod-alpha
+
+server:
+  port: 9090
+  ssl:
+    key-store: classpath:192.168.56.201.jks
+    key-store-password: changeit
+    trust-store: classpath:ms-truststore.jks
+    trust-store-password: changeit
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: https://192.168.56.202:8761/eureka/
+    registry-fetch-interval-seconds: 1
+
+  instance:
+    hostname: ${server.port}
+    metadataMap:
+      zone: alpha
+    nonSecurePortEnabled: false
+    securePortEnabled: true
+    securePort: ${server.port}
+    statusPageUrl: https://${eureka.instance.hostname}:${server.port}/info
+    healthCheckUrl: https://${eureka.instance.hostname}:${server.port}/health
+
+---
+
+spring:
+    profiles: pre-prod-omega
+
+server:
+  port: 9090
+  ssl:
+    key-store: classpath:192.168.56.206.jks
+    key-store-password: changeit
+    trust-store: classpath:ms-truststore.jks
+    trust-store-password: changeit
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: https://192.168.56.203:8761/eureka/
+    registry-fetch-interval-seconds: 1
+
+  instance:
+    hostname: 192.168.56.206
+    metadataMap:
+      zone: omega
+    nonSecurePortEnabled: false
+    securePortEnabled: true
+    securePort: ${server.port}
+    statusPageUrl: https://${eureka.instance.hostname}:${server.port}/info
+    healthCheckUrl: https://${eureka.instance.hostname}:${server.port}/health
+
+
+---
+
+zuul:
+  #Service will be mapped under the /api URI
+  prefix: /api
+
+spring:
+  application:
+    name: dcp-zuul-service
