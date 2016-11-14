@@ -1,16 +1,2 @@
-server:
-  port: 9300
-
-eureka:
-  instance:
-    hostname: 192.168.56.204
-    metadataMap:
-      zone: alpha
-    statusPageUrl: http://${eureka.instance.hostname}:${server.port}/info
-    healthCheckUrl: http://${eureka.instance.hostname}:${server.port}/health
-
-  client:
-    serviceUrl:
-      defaultZone: http://192.168.56.202:8761/eureka/
-    healthcheck:
-      enabled: true
+environment:
+  welcome: Greeting
